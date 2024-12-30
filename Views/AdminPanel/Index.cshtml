@@ -1,0 +1,25 @@
+﻿@model List<E_Wolontariat.Models.UserWithRolesViewModel>
+
+<h1>Panel Administratora</h1>
+<a asp-action="CreateUser" class="btn btn-success mb-3">Stwórz nowego użytkownika</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@string.Join(", ", user.Roles)</td>
+                <td>
+                    <a asp-action="ManageRoles" asp-route-userId="@user.UserId" class="btn btn-primary">Zarządzaj rolami</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

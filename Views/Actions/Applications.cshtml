@@ -1,0 +1,43 @@
+﻿@model IEnumerable<E_Wolontariat.Models.Application>
+
+<h1>Zgłoszenia na akcję: @ViewBag.ActionTitle</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Użytkownik</th>
+            <th>Status</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var application in Model)
+        {
+            <tr>
+                <td>@application.User.Email</td>
+                <td>@application.Status</td>
+                <td>
+                    @if (application.Status == "Pending")
+                    {
+                        <form asp-action="ChangeApplicationStatus" method="post" style="display: inline;">
+                            <input type="hidden" name="applicationId" value="@application.Id" />
+                            <input type="hidden" name="newStatus" value="Accepted" />
+                            <button type="submit" class="btn btn-success">Akceptuj</button>
+                        </form>
+                        <form asp-action="ChangeApplicationStatus" method="post" style="display: inline;">
+                            <input type="hidden" name="applicationId" value="@application.Id" />
+                            <input type="hidden" name="newStatus" value="Rejected" />
+                            <button type="submit" class="btn btn-danger">Odrzuć</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span>@application.Status</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Wróć do listy akcji</a>

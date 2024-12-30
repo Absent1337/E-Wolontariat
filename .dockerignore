@@ -1,0 +1,8 @@
+﻿bin/
+obj/
+*.md
+*.git
+.vscode/
+docker-compose.*
+*.user
+*.vs

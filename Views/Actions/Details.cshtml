@@ -1,0 +1,35 @@
+﻿@model E_Wolontariat.Models.Action
+
+<h1>Szczegóły akcji</h1>
+
+<div>
+    <h3>@Model.Title</h3>
+    <p><strong>Opis:</strong> @Model.Description</p>
+    <p><strong>Data:</strong> @Model.Date.ToShortDateString()</p>
+    <p><strong>Lokalizacja:</strong> @Model.Location</p>
+    <p><strong>Maksymalna liczba uczestników:</strong> @Model.MaxParticipants</p>
+</div>
+
+@if (User.IsInRole("Volunteer"))
+{
+    <form asp-action="SignUp" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-primary">Zapisz się</button>
+    </form>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Powrót</a>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}

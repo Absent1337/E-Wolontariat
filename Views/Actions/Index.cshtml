@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<E_Wolontariat.Models.Action>
+
+@if (User.IsInRole("Organization"))
+{
+    <h1>Twoje akcje</h1>
+}
+else if (User.IsInRole("Volunteer"))
+{
+    <h1>Dostępne akcje</h1>
+}
+else
+{
+    <h1>Przeglądaj dostępne akcje</h1>
+}
+@if (!Model.Any())
+{
+    <p>Nie znaleziono żadnych dostępnych akcji.</p>
+}
+
+<p>
+    Twoje role:
+    @foreach (var role in (await UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result)))
+    {
+        <span>@role</span>
+    }
+</p>
+
+<p>
+    Czy użytkownik jest w roli Admin: @User.IsInRole("Admin") <br />
+    Czy użytkownik jest w roli Organization: @User.IsInRole("Organization") <br />
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tytuł</th>
+            <th>Opis</th>
+            <th>Data</th>
+            <th>Lokalizacja</th>
+            <th>Maksymalna liczba uczestników</th>
+            <th>Akcja</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var action in Model)
+        {
+            <tr>
+                <td>@action.Title</td>
+                <td>@action.Description</td>
+                <td>@action.Date.ToShortDateString()</td>
+                <td>@action.Location</td>
+                <td>@action.MaxParticipants</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@action.Id" class="btn btn-info">Szczegóły</a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Actions" asp-action="Edit" asp-route-id="@action.Id" class="btn btn-primary">Edytuj</a>
+                        <a asp-controller="Actions" asp-action="Delete" asp-route-id="@action.Id" class="btn btn-danger">Usuń</a>
+                    }
+
+                    @if (User.IsInRole("Organization") && action.CreatedBy == User.Identity.Name)
+                    {
+                        <a asp-controller="Actions" asp-action="Applications" asp-route-actionId="@action.Id" class="btn btn-warning">Zgłoszenia</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<E_Wolontariat.Models.Application>
+
+<h1>Moje zapisane akcje</h1>
+
+@if (!Model.Any())
+{
+    <p>Nie zapisałeś się jeszcze na żadną akcję.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Data</th>
+                <th>Lokalizacja</th>
+                <th>Status</th>
+                <th>Szczegóły</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var application in Model)
+            {
+                <tr>
+                    <td>@application.Action.Title</td>
+                    <td>@application.Action.Date.ToShortDateString()</td>
+                    <td>@application.Action.Location</td>
+                    <td>@application.Status</td>
+                    <td>
+                        <a asp-controller="Actions" asp-action="Details" asp-route-id="@application.ActionId" class="btn btn-info">Szczegóły</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
