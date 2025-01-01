@@ -7,15 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Wolontariat.Controllers
 {
-    //[Authorize]
     public class ActionsController : Controller
     {
         private readonly ApplicationDbContext context;
         public ActionsController(ApplicationDbContext context) {
             this.context = context;
         }
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult Index()
+
+
         {
             // Jeśli użytkownik jest organizacją, pokaż tylko jego akcje
             if (User.IsInRole("Organization"))
@@ -30,9 +31,10 @@ namespace E_Wolontariat.Controllers
             // Jeśli użytkownik jest wolontariuszem, pokaż wszystkie dostępne akcje
             else if (User.IsInRole("Volunteer"))
             {
+                // Pokaż wszystkie akcje, których data jest dzisiejsza lub przyszła
                 var actions = context.Actions
-                    .Where(a => a.Date >= DateTime.Now) // Tylko przyszłe akcje
-                    .OrderByDescending(a => a.Date)
+                    .Where(a => a.Date >= DateTime.Today) // Uwzględnij dzisiejszą datę
+                    .OrderBy(a => a.Date) // Posortuj rosnąco po dacie
                     .ToList();
 
                 return View(actions);
@@ -40,20 +42,23 @@ namespace E_Wolontariat.Controllers
             // Jeśli użytkownik jest anonimowy, pokaż wszystkie dostępne akcje
             else
             {
+                // Pokaż wszystkie akcje, których data jest dzisiejsza lub przyszła
                 var actions = context.Actions
-                    .Where(a => a.Date >= DateTime.Now) // Tylko przyszłe akcje
-                    .OrderByDescending(a => a.Date)
+                    .Where(a => a.Date >= DateTime.Today) // Uwzględnij dzisiejszą datę
+                    .OrderBy(a => a.Date) // Posortuj rosnąco po dacie
                     .ToList();
 
                 return View(actions);
             }
         }
+
         [Authorize(Roles = "Admin,Organization")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(ActionDto ActionDto)
         {
@@ -74,6 +79,7 @@ namespace E_Wolontariat.Controllers
             }
             return View();
         }
+        [Authorize(Roles = "Admin,Organization")]
         public IActionResult Edit(int id)
         {
             var action = context.Actions.Find(id);
@@ -94,6 +100,7 @@ namespace E_Wolontariat.Controllers
 
             return View(model);
         }
+        [Authorize]
         [HttpPost]
         public IActionResult Edit(int id, ActionDto model)
         {
@@ -120,8 +127,37 @@ namespace E_Wolontariat.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin, Organization")]
+        [HttpPost]
+        public IActionResult DeleteAction(int id)
+        {
+            // Pobierz akcję z bazy danych
+            var action = context.Actions.FirstOrDefault(a => a.Id == id);
 
-        [AllowAnonymous]
+            if (action == null)
+            {
+                TempData["Error"] = "Akcja nie istnieje.";
+                return RedirectToAction("Index");
+            }
+
+            // Sprawdź, czy użytkownik jest twórcą akcji lub adminem
+            if (User.IsInRole("Organization") && action.CreatedBy != User.Identity.Name && !User.IsInRole("Admin"))
+            {
+                TempData["Error"] = "Nie masz uprawnień do usunięcia tej akcji.";
+                return RedirectToAction("Index");
+            }
+
+            // Usuń akcję oraz powiązane zgłoszenia
+            var applications = context.Applications.Where(a => a.ActionId == id).ToList();
+            context.Applications.RemoveRange(applications);
+            context.Actions.Remove(action);
+            context.SaveChanges();
+
+            TempData["Success"] = "Akcja została usunięta.";
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
         public IActionResult AvailableActions()
         {
             var actions = context.Actions
@@ -131,7 +167,8 @@ namespace E_Wolontariat.Controllers
 
             return View(actions);
         }
-        [AllowAnonymous]
+
+        [Authorize]
         public IActionResult Details(int id)
         {
             var action = context.Actions.Find(id);
@@ -254,6 +291,42 @@ namespace E_Wolontariat.Controllers
             return RedirectToAction("Applications", new { actionId = application.ActionId });
         }
 
+        [Authorize]
+        public IActionResult Search(string searchTitle, DateTime? searchDate, string searchLocation)
+        {
+            // Jeśli podano datę w przeszłości, zwróć pustą listę
+            if (searchDate.HasValue && searchDate.Value.Date < DateTime.Today)
+            {
+                return PartialView("_SearchResults", new List<E_Wolontariat.Models.Action>()); // Zwróć pustą listę
+            }
+
+            // Pobierz wszystkie akcje
+            var actions = context.Actions.AsQueryable();
+
+            // Filtruj według tytułu
+            if (!string.IsNullOrEmpty(searchTitle))
+            {
+                actions = actions.Where(a => a.Title.Contains(searchTitle));
+            }
+
+            // Filtruj według daty
+            if (searchDate.HasValue)
+            {
+                actions = actions.Where(a => a.Date.Date == searchDate.Value.Date);
+            }
+
+            // Filtruj według lokalizacji
+            if (!string.IsNullOrEmpty(searchLocation))
+            {
+                actions = actions.Where(a => a.Location.Contains(searchLocation));
+            }
+
+            // Filtruj tylko akcje od dzisiaj
+            actions = actions.Where(a => a.Date >= DateTime.Today);
+
+            // Zwróć wyniki
+            return PartialView("_SearchResults", actions.OrderBy(a => a.Date).ToList());
+        }
 
     }
 }

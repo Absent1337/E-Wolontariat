@@ -1,0 +1,56 @@
+﻿@model IEnumerable<E_Wolontariat.Models.Action>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tytuł</th>
+            <th>Opis</th>
+            <th>Data</th>
+            <th>Lokalizacja</th>
+            <th>Maksymalna liczba uczestników</th>
+            <th>Akcja</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="6" class="text-center">Nie znaleziono akcji spełniających kryteria wyszukiwania.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var action in Model)
+            {
+                <tr>
+                    <td>@action.Title</td>
+                    <td>@action.Description</td>
+                    <td>@action.Date.ToShortDateString()</td>
+                    <td>@action.Location</td>
+                    <td>@action.MaxParticipants</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@action.Id" class="btn btn-info">Szczegóły</a>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Organization"))
+                        {
+                            <a asp-controller="Actions" asp-action="Edit" asp-route-id="@action.Id" class="btn btn-primary">Edytuj</a>
+                        }
+
+                        @if (User.IsInRole("Admin") || (User.IsInRole("Organization") && action.CreatedBy == User.Identity.Name))
+                        {
+                            <form asp-action="DeleteAction" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="@action.Id" />
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Czy na pewno chcesz usunąć tę akcję?');">Usuń</button>
+                            </form>
+                        }
+
+                        @if (User.IsInRole("Organization") && action.CreatedBy == User.Identity.Name)
+                        {
+                            <a asp-controller="Actions" asp-action="Applications" asp-route-actionId="@action.Id" class="btn btn-warning">Zgłoszenia</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

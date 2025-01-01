@@ -20,55 +20,67 @@ else
     <p>Nie znaleziono żadnych dostępnych akcji.</p>
 }
 
-<p>
-    Twoje role:
-    @foreach (var role in (await UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result)))
-    {
-        <span>@role</span>
-    }
-</p>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        Twoje role:
+        @foreach (var role in (await UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result)))
+        {
+            <span>@role</span>
+        }
+    </p>
+}
+else
+{
+    <p>Jesteś anonimowym użytkownikiem.</p>
+}
 
 <p>
     Czy użytkownik jest w roli Admin: @User.IsInRole("Admin") <br />
     Czy użytkownik jest w roli Organization: @User.IsInRole("Organization") <br />
 </p>
 
+<!-- Formularz wyszukiwania -->
+<form id="searchForm" class="mb-4">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" name="searchTitle" class="form-control" placeholder="Szukaj po tytule" />
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="searchDate" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="searchLocation" class="form-control" placeholder="Szukaj po miejscu" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Szukaj</button>
+            <a href="/Actions" class="btn btn-secondary w-100">Resetuj</a>
+        </div>
+    </div>
+</form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Tytuł</th>
-            <th>Opis</th>
-            <th>Data</th>
-            <th>Lokalizacja</th>
-            <th>Maksymalna liczba uczestników</th>
-            <th>Akcja</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var action in Model)
-        {
-            <tr>
-                <td>@action.Title</td>
-                <td>@action.Description</td>
-                <td>@action.Date.ToShortDateString()</td>
-                <td>@action.Location</td>
-                <td>@action.MaxParticipants</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@action.Id" class="btn btn-info">Szczegóły</a>
+<!-- Sekcja wyników wyszukiwania -->
+<div id="searchResults">
+    @Html.Partial("_SearchResults", Model) <!-- Wyświetl pierwotne wyniki -->
+</div>
 
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-controller="Actions" asp-action="Edit" asp-route-id="@action.Id" class="btn btn-primary">Edytuj</a>
-                        <a asp-controller="Actions" asp-action="Delete" asp-route-id="@action.Id" class="btn btn-danger">Usuń</a>
-                    }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#searchForm').submit(function (e) {
+            e.preventDefault(); // Zatrzymaj standardowe przesłanie formularza
 
-                    @if (User.IsInRole("Organization") && action.CreatedBy == User.Identity.Name)
-                    {
-                        <a asp-controller="Actions" asp-action="Applications" asp-route-actionId="@action.Id" class="btn btn-warning">Zgłoszenia</a>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            $.ajax({
+                url: '/Actions/Search', // Ścieżka do metody Search
+                type: 'get',
+                data: $(this).serialize(), // Pobierz dane formularza
+                success: function (data) {
+                    $('#searchResults').html(data); // Zaktualizuj wyniki wyszukiwania
+                },
+                error: function () {
+                    alert('Wystąpił błąd podczas wyszukiwania.');
+                }
+            });
+        });
+    });
+</script>
