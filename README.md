@@ -29,7 +29,7 @@ E-Wolontariat to aplikacja webowa stworzona w ASP.NET Core MVC, która umożliwi
 
 ## Technologie użyte w projekcie
 
-- **Backend**: ASP.NET Core 7.0 MVC
+- **Backend**: ASP.NET Core 8.0 MVC
 - **Frontend**: Razor Pages, Bootstrap 5
 - **Baza danych**: Microsoft SQL Server
 - **Autoryzacja i uwierzytelnianie**: ASP.NET Identity
@@ -142,15 +142,6 @@ http://localhost:8080
 - **Admin**:
   - Email: `admin@admin.com`
   - Hasło: `Admin123!`
-
-
----
-
-## TODO
-
-- Dodanie paginacji wyników wyszukiwania.
-- Obsługa powiadomień e-mail dla akceptacji/odrzucenia zgłoszeń.
-- Zwiększenie pokrycia testami jednostkowymi.
 
 ---
 
