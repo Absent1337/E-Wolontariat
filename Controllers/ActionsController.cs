@@ -13,7 +13,7 @@ namespace E_Wolontariat.Controllers
         public ActionsController(ApplicationDbContext context) {
             this.context = context;
         }
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult Index()
 
 
@@ -157,7 +157,7 @@ namespace E_Wolontariat.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult AvailableActions()
         {
             var actions = context.Actions
@@ -168,7 +168,7 @@ namespace E_Wolontariat.Controllers
             return View(actions);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             var action = context.Actions.Find(id);
@@ -291,7 +291,7 @@ namespace E_Wolontariat.Controllers
             return RedirectToAction("Applications", new { actionId = application.ActionId });
         }
 
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult Search(string searchTitle, DateTime? searchDate, string searchLocation)
         {
             // Jeśli podano datę w przeszłości, zwróć pustą listę
