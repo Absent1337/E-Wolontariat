@@ -1,33 +1,33 @@
 # E-Wolontariat
 
-E-Wolontariat to aplikacja webowa stworzona w ASP.NET Core MVC, która umo¿liwia organizacjom zarz¹dzanie akcjami wolontariackimi oraz pozwala wolontariuszom na przegl¹danie i zapisywanie siê na dostêpne akcje. Aplikacja posiada ró¿ne poziomy dostêpu dla administratorów, organizacji i wolontariuszy.
+E-Wolontariat to aplikacja webowa stworzona w ASP.NET Core MVC, ktÃ³ra umoÅ¼liwia organizacjom zarzÄ…dzanie akcjami wolontariackimi oraz pozwala wolontariuszom na przeglÄ…danie i zapisywanie siÄ™ na dostÄ™pne akcje. Aplikacja posiada rÃ³Å¼ne poziomy dostÄ™pu dla administratorÃ³w, organizacji i wolontariuszy.
 
 ---
 
-## Funkcjonalnoœci
+## FunkcjonalnoÅ›ci
 
 ### **Publiczne**
-- Przegl¹danie dostêpnych akcji (równie¿ dla anonimowych u¿ytkowników).
+- PrzeglÄ…danie dostÄ™pnych akcji (rÃ³wnieÅ¼ dla anonimowych uÅ¼ytkownikÃ³w).
 
 ### **Wolontariusze**
 - Rejestracja i logowanie.
-- Przegl¹danie listy dostêpnych akcji.
-- Zapisywanie siê na wybrane akcje.
-- Przegl¹danie historii swoich zapisów wraz ze statusem zg³oszenia (zaakceptowane/odrzucone).
+- PrzeglÄ…danie listy dostÄ™pnych akcji.
+- Zapisywanie siÄ™ na wybrane akcje.
+- PrzeglÄ…danie historii swoich zapisÃ³w wraz ze statusem zgÅ‚oszenia (zaakceptowane/odrzucone).
 
 ### **Organizacje**
 - Dodawanie nowych akcji.
 - Edytowanie i usuwanie swoich akcji.
-- Przegl¹danie zg³oszeñ wolontariuszy na swoje akcje.
-- Akceptowanie lub odrzucanie zg³oszeñ wolontariuszy.
+- PrzeglÄ…danie zgÅ‚oszeÅ„ wolontariuszy na swoje akcje.
+- Akceptowanie lub odrzucanie zgÅ‚oszeÅ„ wolontariuszy.
 
 ### **Administratorzy**
-- Zarz¹dzanie wszystkimi akcjami.
-- Tworzenie u¿ytkowników i przypisywanie im ról.
+- ZarzÄ…dzanie wszystkimi akcjami.
+- Tworzenie uÅ¼ytkownikÃ³w i przypisywanie im rÃ³l.
 
 ---
 
-## Technologie u¿yte w projekcie
+## Technologie uÅ¼yte w projekcie
 
 - **Backend**: ASP.NET Core 7.0 MVC
 - **Frontend**: Razor Pages, Bootstrap 5
@@ -57,11 +57,11 @@ cd e-wolontariat
 }
 ```
 
-Zamieñ `YourStrongPassword` na has³o do swojej instancji SQL Server.
+ZamieÅ„ `YourStrongPassword` na hasÅ‚o do swojej instancji SQL Server.
 
 ### **3. Migracje bazy danych**
 
-Wykonaj migracje, aby utworzyæ schemat bazy danych:
+Wykonaj migracje, aby utworzyÄ‡ schemat bazy danych:
 
 ```bash
 dotnet ef database update
@@ -69,13 +69,13 @@ dotnet ef database update
 
 ### **4. Uruchomienie aplikacji lokalnie**
 
-Uruchom aplikacjê:
+Uruchom aplikacjÄ™:
 
 ```bash
 dotnet run
 ```
 
-Aplikacja bêdzie dostêpna pod adresem:
+Aplikacja bÄ™dzie dostÄ™pna pod adresem:
 
 ```
 http://localhost:5000
@@ -96,7 +96,7 @@ docker build -t e-wolontariat .
 docker run -d -p 8080:80 e-wolontariat
 ```
 
-Aplikacja bêdzie dostêpna pod adresem:
+Aplikacja bÄ™dzie dostÄ™pna pod adresem:
 
 ```
 http://localhost:8080
@@ -106,7 +106,7 @@ http://localhost:8080
 
 ## Struktura projektu
 
-- **Controllers**: Logika kontrolerów MVC.
+- **Controllers**: Logika kontrolerÃ³w MVC.
 - **Models**: Modele danych (np. `Action`, `Application`, `User`).
 - **Views**: Widoki Razor (np. `Index.cshtml`, `Details.cshtml`).
 - **Services**: Logika biznesowa i integracje.
@@ -114,53 +114,53 @@ http://localhost:8080
 
 ---
 
-## Role u¿ytkowników
+## Role uÅ¼ytkownikÃ³w
 
 ### **Admin**
-- Ma dostêp do wszystkich funkcjonalnoœci aplikacji.
-- Mo¿e tworzyæ u¿ytkowników i przypisywaæ im role.
+- Ma dostÄ™p do wszystkich funkcjonalnoÅ›ci aplikacji.
+- MoÅ¼e tworzyÄ‡ uÅ¼ytkownikÃ³w i przypisywaÄ‡ im role.
 
 ### **Organization**
-- Mo¿e zarz¹dzaæ swoimi akcjami.
-- Ma dostêp do zg³oszeñ wolontariuszy.
+- MoÅ¼e zarzÄ…dzaÄ‡ swoimi akcjami.
+- Ma dostÄ™p do zgÅ‚oszeÅ„ wolontariuszy.
 
 ### **Volunteer**
-- Mo¿e przegl¹daæ i zapisywaæ siê na akcje.
-- Widzi historiê swoich zg³oszeñ.
+- MoÅ¼e przeglÄ…daÄ‡ i zapisywaÄ‡ siÄ™ na akcje.
+- Widzi historiÄ™ swoich zgÅ‚oszeÅ„.
 
 ---
 
-## Funkcjonalnoœci AJAX
+## FunkcjonalnoÅ›ci AJAX
 
-- **Wyszukiwanie akcji**: Dynamiczne filtrowanie akcji po tytule, dacie i lokalizacji z obs³ug¹ AJAX.
-- **Resetowanie filtrów**: Mo¿liwoœæ resetowania kryteriów wyszukiwania bez prze³adowania strony.
+- **Wyszukiwanie akcji**: Dynamiczne filtrowanie akcji po tytule, dacie i lokalizacji z obsÅ‚ugÄ… AJAX.
+- **Resetowanie filtrÃ³w**: MoÅ¼liwoÅ›Ä‡ resetowania kryteriÃ³w wyszukiwania bez przeÅ‚adowania strony.
 
 ---
 
-## Przyk³adowe konto
+## PrzykÅ‚adowe konto
 
 - **Admin**:
   - Email: `admin@admin.com`
-  - Has³o: `Admin123!`
+  - HasÅ‚o: `Admin123!`
 
 
 ---
 
 ## TODO
 
-- Dodanie paginacji wyników wyszukiwania.
-- Obs³uga powiadomieñ e-mail dla akceptacji/odrzucenia zg³oszeñ.
-- Zwiêkszenie pokrycia testami jednostkowymi.
+- Dodanie paginacji wynikÃ³w wyszukiwania.
+- ObsÅ‚uga powiadomieÅ„ e-mail dla akceptacji/odrzucenia zgÅ‚oszeÅ„.
+- ZwiÄ™kszenie pokrycia testami jednostkowymi.
 
 ---
 
-## Wk³ad w projekt
+## WkÅ‚ad w projekt
 
-Zapraszamy do zg³aszania b³êdów i propozycji nowych funkcjonalnoœci za pomoc¹ [Issues](https://github.com/user/e-wolontariat/issues) w repozytorium.
+Zapraszamy do zgÅ‚aszania bÅ‚Ä™dÃ³w i propozycji nowych funkcjonalnoÅ›ci za pomocÄ… [Issues](https://github.com/user/e-wolontariat/issues) w repozytorium.
 
 ---
 
 ## Licencja
 
-Projekt jest dostêpny na licencji MIT. Szczegó³y w pliku `LICENSE`.
+Projekt jest dostÄ™pny na licencji GPL-3. SzczegÃ³Å‚y w pliku `LICENSE`.
 
