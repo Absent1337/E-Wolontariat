@@ -19,26 +19,27 @@ else
 {
     <p>Nie znaleziono żadnych dostępnych akcji.</p>
 }
+@* DEBUG *@
+@* @if (User.Identity.IsAuthenticated) *@
+@* { *@
+@*     <p> *@
+@*         Twoje role: *@
+@*         @foreach (var role in (await UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result))) *@
+@*         { *@
+@*             <span>@role</span> *@
+@*         } *@
+@*     </p> *@
+@* } *@
+@* else *@
+@* { *@
+@*     <p>Jesteś anonimowym użytkownikiem.</p> *@
+@* } *@
 
-@if (User.Identity.IsAuthenticated)
-{
-    <p>
-        Twoje role:
-        @foreach (var role in (await UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result)))
-        {
-            <span>@role</span>
-        }
-    </p>
-}
-else
-{
-    <p>Jesteś anonimowym użytkownikiem.</p>
-}
-
-<p>
-    Czy użytkownik jest w roli Admin: @User.IsInRole("Admin") <br />
-    Czy użytkownik jest w roli Organization: @User.IsInRole("Organization") <br />
-</p>
+@* <p> *@
+@*     Czy użytkownik jest w roli Admin: @User.IsInRole("Admin") <br /> *@
+@*     Czy użytkownik jest w roli Organization: @User.IsInRole("Organization") <br /> *@
+@* </p> *@
+@* DEBUG *@
 
 <!-- Formularz wyszukiwania -->
 <form id="searchForm" class="mb-4">
