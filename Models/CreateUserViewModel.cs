@@ -12,7 +12,8 @@ namespace E_Wolontariat.Models
         [StringLength(100, ErrorMessage = "Hasło musi mieć co najmniej {2} znaków", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
+        
+        [Required(ErrorMessage = "Rola jest wymagana.")]
         [Display(Name = "Rola")]
         public string Role { get; set; }
     }
