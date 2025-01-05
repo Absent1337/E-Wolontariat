@@ -67,7 +67,14 @@ Wykonaj migracje, aby utworzyć schemat bazy danych:
 dotnet ef database update
 ```
 
-### **4. Uruchomienie aplikacji lokalnie**
+### **4. Tworzenie pierwszego konta organizacji**
+
+Domyślnie każde nowe konto jest tworzone jako wolontariusz. Pierwsza akcje można dodać na kilka możliwości:
+1. Użyć wbudowanego konta organizacji i utworzyć nim akcje
+2. Zalogować się na konto administratora, zmienić rolę wybranego wolontariusza na organizację i umożliwić mu dodanie akcji.
+3. Alternatywnie, z poziomu panelu administratora można utworzyć konto z rolą organizacji i rozpocząć dodawanie akcji.
+
+### **5. Uruchomienie aplikacji lokalnie**
 
 Uruchom aplikację:
 
@@ -82,7 +89,7 @@ http://localhost:5000
 http://localhost:5001 (HTTPS)
 ```
 
-### **5. Uruchomienie aplikacji w Dockerze**
+### **6. Uruchomienie aplikacji w Dockerze**
 
 #### Budowanie obrazu Dockerowego
 
@@ -106,11 +113,46 @@ http://localhost:8080
 
 ## Struktura projektu
 
-- **Controllers**: Logika kontrolerów MVC.
-- **Models**: Modele danych (np. `Action`, `Application`, `User`).
-- **Views**: Widoki Razor (np. `Index.cshtml`, `Details.cshtml`).
-- **Services**: Logika biznesowa i integracje.
-- **Migrations**: Migracje bazy danych.
+### **Controllers**
+- `ActionsController.cs` - Obsługuje zarządzanie akcjami (CRUD), zapisy wolontariuszy oraz filtrowanie akcji.
+- `AdminPanelController.cs` - Zarządza funkcjami dostępnymi dla administratora, w tym tworzeniem użytkowników i przypisywaniem ról.
+- `HomeController.cs` - Obsługuje strony główne i statyczne, takie jak `Index` i `Privacy`.
+
+### **Models**
+- `Action.cs` - Reprezentuje akcje organizowane przez organizacje (tytuł, opis, data, lokalizacja, liczba uczestników).
+- `ActionDto.cs` - Służy jako obiekt transferowy do walidacji danych dla akcji.
+- `Application.cs` - Model zgłoszeń wolontariuszy na akcje (status, relacje do użytkownika i akcji).
+- `CreateUserViewModel.cs` - Model używany do tworzenia nowych użytkowników przez administratora.
+- `ErrorViewModel.cs` - Obsługuje komunikaty błędów.
+- `ManageRolesViewModel.cs` - Model używany do zarządzania rolami użytkowników.
+- `UserWithRolesViewModel.cs` - Reprezentuje użytkownika z przypisanymi rolami.
+- `VolunteerAction.cs` - Model akcji przypisanych do wolontariuszy.
+
+### **Views**
+- **Actions**:
+  - `_SearchResults.cshtml` - Widok częściowy do wyświetlania wyników wyszukiwania.
+  - `Applications.cshtml` - Wyświetla zgłoszenia na akcje.
+  - `Create.cshtml` - Formularz tworzenia nowej akcji.
+  - `Details.cshtml` - Szczegóły akcji.
+  - `Edit.cshtml` - Formularz edycji akcji.
+  - `Index.cshtml` - Lista wszystkich akcji z funkcją wyszukiwania.
+  - `MyActions.cshtml` - Lista akcji, na które zapisał się wolontariusz.
+- **AdminPanel**:
+  - `CreateUser.cshtml` - Formularz do tworzenia nowych użytkowników.
+  - `Index.cshtml` - Panel administratora z listą użytkowników.
+  - `ManageRoles.cshtml` - Zarządzanie rolami użytkowników.
+- **Home**:
+  - `Index.cshtml` - Strona główna.
+  - `Privacy.cshtml` - Polityka prywatności.
+- **Shared**:
+  - `_ViewImports.cshtml` - Globalne dyrektywy Razor.
+  - `_ViewStart.cshtml` - Konfiguracja widoków.
+
+### **Services**
+- `ApplicationDbContext.cs` - Klasa kontekstu bazy danych, zarządzająca modelami i ich relacjami.
+
+### **Migrations**
+- Folder zawierający migracje bazy danych generowane przez Entity Framework.
 
 ---
 
@@ -142,16 +184,21 @@ http://localhost:8080
 - **Admin**:
   - Email: `admin@admin.com`
   - Hasło: `Admin123!`
+- **Wolontariusz**:
+  - Email: `wolontariusz@email.com`
+  - Hasło: `Wolontariat123!`
+- **Organizacja**:
+  - Email: `organizacja@email.com`
+  - Hasło: `Organizacja123!`
 
 ---
 
 ## Wkład w projekt
 
-Zapraszamy do zgłaszania błędów i propozycji nowych funkcjonalności za pomocą [Issues](https://github.com/user/e-wolontariat/issues) w repozytorium.
+Zapraszamy do zgłaszania błędów i propozycji nowych funkcjonalności za pomocą [Issues](https://github.com/Absent1337/E-Wolontariat/issues) w repozytorium.
 
 ---
 
 ## Licencja
 
 Projekt jest dostępny na licencji GPL-3. Szczegóły w pliku `LICENSE`.
-
