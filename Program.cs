@@ -103,11 +103,29 @@ async Task CreateUserAsync(UserManager<IdentityUser> userManager)
 {
     string adminEmail = "admin@admin.com";
     string adminPassword = "Admin123!";
+    string volunteerEmail = "wolontariusz@email.com";
+    string volunteerPassword = "Wolontariat123!";
+    string organizationEmail = "organizacja@email.com";
+    string organizationPassword = "Organizacja123!";
     // Dodanie u¿ytkownika Admin
     if (await userManager.FindByNameAsync(adminEmail) == null)
     {
         var user = new IdentityUser { UserName = adminEmail, Email = adminEmail };
         await userManager.CreateAsync(user, adminPassword);
         await userManager.AddToRoleAsync(user, UserRoles.Admin.ToString());
+    }
+    // Dodanie u¿ytkownika Volunteer
+    if (await userManager.FindByNameAsync(volunteerEmail) == null)
+    {
+        var user = new IdentityUser { UserName = volunteerEmail, Email = volunteerEmail };
+        await userManager.CreateAsync(user, volunteerPassword);
+        await userManager.AddToRoleAsync(user, UserRoles.Volunteer.ToString());
+    }
+    // Dodanie u¿ytkownika Organization
+    if (await userManager.FindByNameAsync(organizationEmail) == null)
+    {
+        var user = new IdentityUser { UserName = organizationEmail, Email = organizationEmail };
+        await userManager.CreateAsync(user, organizationPassword);
+        await userManager.AddToRoleAsync(user, UserRoles.Organization.ToString());
     }
 }
