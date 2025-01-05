@@ -85,8 +85,7 @@ dotnet run
 Aplikacja będzie dostępna pod adresem:
 
 ```
-http://localhost:5000
-http://localhost:5001 (HTTPS)
+http://localhost:5180
 ```
 
 ### **6. Uruchomienie aplikacji w Dockerze**
