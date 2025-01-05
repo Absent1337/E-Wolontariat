@@ -119,15 +119,54 @@ http://localhost:8080
 - `HomeController.cs` - Obsługuje strony główne i statyczne, takie jak `Index` i `Privacy`.
 
 ### **Models**
-- `Action.cs` - Reprezentuje akcje organizowane przez organizacje (tytuł, opis, data, lokalizacja, liczba uczestników).
+- `Action.cs` - Reprezentuje akcje organizowane przez organizacje.
+  - **Pola**:
+    - `Id` *(int)*: Unikalny identyfikator akcji.
+    - `Title` *(string)*: Tytuł akcji.
+    - `Description` *(string)*: Opis akcji.
+    - `Date` *(DateTime)*: Data akcji.
+    - `Location` *(string)*: Lokalizacja akcji.
+    - `MaxParticipants` *(int)*: Maksymalna liczba uczestników.
 - `ActionDto.cs` - Służy jako obiekt transferowy do walidacji danych dla akcji.
-- `Application.cs` - Model zgłoszeń wolontariuszy na akcje (status, relacje do użytkownika i akcji).
+  - **Pola**:
+    - `Title` *(string, required, max. 100 znaków)*.
+    - `Description` *(string, required, min. 10 znaków)*.
+    - `Date` *(DateTime, required)*.
+    - `Location` *(string, required)*.
+    - `MaxParticipants` *(int, required)*.
+- `Application.cs` - Model zgłoszeń wolontariuszy na akcje.
+  - **Pola**:
+    - `Id` *(int)*: Unikalny identyfikator zgłoszenia.
+    - `UserId` *(string)*: Identyfikator użytkownika składającego zgłoszenie.
+    - `ActionId` *(int)*: Identyfikator powiązanej akcji.
+    - `Status` *(string)*: Status zgłoszenia (`Pending`, `Accepted`, `Rejected`).
 - `CreateUserViewModel.cs` - Model używany do tworzenia nowych użytkowników przez administratora.
+  - **Pola**:
+    - `Email` *(string, required)*: Adres e-mail użytkownika.
+    - `Password` *(string, required, min. 6 znaków)*: Hasło użytkownika.
+    - `Role` *(string, required)*: Rola przypisana użytkownikowi.
 - `ErrorViewModel.cs` - Obsługuje komunikaty błędów.
+  - **Pola**:
+    - `RequestId` *(string)*: Identyfikator zapytania.
+    - `ShowRequestId` *(bool)*: Flaga wskazująca, czy pokazać identyfikator zapytania.
 - `ManageRolesViewModel.cs` - Model używany do zarządzania rolami użytkowników.
+  - **Pola**:
+    - `UserId` *(string)*: Identyfikator użytkownika.
+    - `Roles` *(IEnumerable<string>)*: Lista dostępnych ról.
+    - `AvailableRoles` *(List<IdentityRole>)*: Lista wszystkich dostępnych ról w systemie.
+    - `UserRoles` *(IList<string>)*: Lista ról przypisanych użytkownikowi.
 - `UserWithRolesViewModel.cs` - Reprezentuje użytkownika z przypisanymi rolami.
+  - **Pola**:
+    - `UserId` *(string)*: Identyfikator użytkownika.
+    - `Email` *(string)*: Adres e-mail użytkownika.
+    - `Roles` *(IEnumerable<string>)*: Lista przypisanych ról.
 - `VolunteerAction.cs` - Model akcji przypisanych do wolontariuszy.
-
+  - **Pola**:
+    - `Id` *(int)*: Identyfikator rekordu.
+    - `VolunteerId` *(string, required)*: Identyfikator wolontariusza (IdentityUser).
+    - `ActionId` *(int, required)*: Identyfikator akcji.
+    - `Volunteer` *(IdentityUser)*: Powiązany obiekt użytkownika-wolontariusza.
+    - `Action` *(Action)*: Powiązany obiekt akcji.
 ### **Views**
 - **Actions**:
   - `_SearchResults.cshtml` - Widok częściowy do wyświetlania wyników wyszukiwania.
