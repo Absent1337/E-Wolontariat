@@ -126,6 +126,8 @@ http://localhost:8080
     - `Date` *(DateTime)*: Data akcji.
     - `Location` *(string)*: Lokalizacja akcji.
     - `MaxParticipants` *(int)*: Maksymalna liczba uczestników.
+    - `CreatedBy` *(string)*: Twórca akcji
+    - `Applications` *(ICollection)* Lista zgłoszeń powiązanych z akcją
 - `ActionDto.cs` - Służy jako obiekt transferowy do walidacji danych dla akcji.
   - **Pola**:
     - `Title` *(string, required, max. 100 znaków)*.
@@ -139,6 +141,8 @@ http://localhost:8080
     - `UserId` *(string)*: Identyfikator użytkownika składającego zgłoszenie.
     - `ActionId` *(int)*: Identyfikator powiązanej akcji.
     - `Status` *(string)*: Status zgłoszenia (`Pending`, `Accepted`, `Rejected`).
+    - `User` *(IdentityUser)*: Powiązany obiekt użytkownika.
+    - `Action` *(Action)*: Powiązany obiekt akcji.
 - `CreateUserViewModel.cs` - Model używany do tworzenia nowych użytkowników przez administratora.
   - **Pola**:
     - `Email` *(string, required)*: Adres e-mail użytkownika.
